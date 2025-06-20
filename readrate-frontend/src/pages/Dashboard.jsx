@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { toggleDarkMode } from '../utils/theme';
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
@@ -95,6 +96,15 @@ const Dashboard = () => {
       >
         <span className="text-2xl font-bold">+</span>
       </motion.button>
+
+        <motion.button
+            onClick={toggleDarkMode}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="absolute top-6 right-6 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-3 py-1 rounded-full text-sm shadow transition-colors"
+            >
+            🌓 Mode
+        </motion.button>
     </div>
   );
 };

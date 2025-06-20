@@ -1,10 +1,10 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 export default {
+  darkMode: 'class', // <--- ini penting
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class', // <-- tambahkan ini!
   theme: {
     extend: {},
   },
