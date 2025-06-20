@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Search from './pages/Search';
 import ReadHistory from './pages/ReadHistory';
+import AddBook from './pages/AddBook';
+import BookDetail from './pages/BookDetail'; 
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/search" element={<Search />} />
       <Route path="/read-history" element={<ReadHistory />} />
+      <Route path="/book/:id" element={<BookDetail />} />
+      <Route path="/add-book" element={<AddBook />} />
     </Routes>
   );
 }
