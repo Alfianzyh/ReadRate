@@ -7,6 +7,8 @@ use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ReadBookController;
 use App\Http\Controllers\GoogleBooksController;
+use App\Http\Controllers\BookPublicController;
+use App\Http\Controllers\BookNewsController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -43,8 +45,4 @@ Route::get('/import-books', [GoogleBooksController::class, 'searchAndImport']);
 
 Route::get('/search-books', [BookController::class, 'search']);
 
-Route::get('/books/popular', [BookController::class, 'popular']);
-
-Route::get('/books/reviews', [BookController::class, 'reviews']);
-
-Route::get('/books/news', [BookController::class, 'news']);
+Route::get('/book-news', [BookNewsController::class, 'fetch']);
