@@ -130,5 +130,24 @@ class BookController extends Controller
         return response()->json(['data' => $books]);
     }
 
+    public function reviews()
+    {
+        $reviews = DB::table('ratings')
+        ->join('books', 'ratings.book_id', '=', 'books.id')
+        ->join('users', 'ratings.user_id', '=', 'users.id')
+        ->select(
+            'users.name as user_name',
+            'books.title as book_title',
+            'ratings.rating',
+            'ratings.comment'
+        )
+        ->whereNotNull('ratings.comment')
+        ->orderByDesc('ratings.created_at')
+        ->limit(10)
+        ->get();
+
+        return response()->json(['data' => $reviews]);;
+    }
+
 }
 

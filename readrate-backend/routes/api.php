@@ -45,4 +45,4 @@ Route::get('/search-books', [BookController::class, 'search']);
 
 Route::get('/books/popular', [BookController::class, 'popular']);
 
-
+Route::get('/books/reviews', [BookController::class, 'reviews']);
