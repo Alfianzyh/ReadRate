@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth; // Ensure Auth is imported
 
 class BookController extends Controller
 {
@@ -26,6 +27,7 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         return response()->json($book);
     }
+
     public function uploadCover(Request $request, $id)
     {
         $request->validate([
@@ -44,14 +46,13 @@ class BookController extends Controller
             'success' => true,
             'message' => 'Cover uploaded successfully',
             'path' => $path,
-            'url' => asset('storage/' . $path) // ini akan hasilkan http://localhost:8000/storage/...
+            'url' => asset('storage/' . $path)
         ]);
-
     }
-   public function averageRating($id)
+
+    public function averageRating($id)
     {
         $book = Book::findOrFail($id);
-
         $average = $book->ratings()->avg('rating');
 
         return response()->json([
@@ -119,13 +120,13 @@ class BookController extends Controller
 
     public function popular()
     {
-       $books = DB::table('ratings')
-        ->join('books', 'ratings.book_id', '=', 'books.id')
-        ->select('books.id', 'books.title', 'books.cover_url', DB::raw('AVG(ratings.rating) as average_rating'))
-        ->groupBy('books.id', 'books.title', 'books.cover_url')
-        ->orderByDesc('average_rating')
-        ->limit(10)
-        ->get();
+        $books = DB::table('ratings')
+            ->join('books', 'ratings.book_id', '=', 'books.id')
+            ->select('books.id', 'books.title', 'books.cover_url', DB::raw('AVG(ratings.rating) as average_rating'))
+            ->groupBy('books.id', 'books.title', 'books.cover_url')
+            ->orderByDesc('average_rating')
+            ->limit(10)
+            ->get();
 
         return response()->json(['data' => $books]);
     }
@@ -133,41 +134,41 @@ class BookController extends Controller
     public function reviews()
     {
         $reviews = DB::table('ratings')
-        ->join('books', 'ratings.book_id', '=', 'books.id')
-        ->join('users', 'ratings.user_id', '=', 'users.id')
-        ->select(
-            'users.name as user_name',
-            'books.title as book_title',
-            'ratings.rating',
-            'ratings.comment'
-        )
-        ->whereNotNull('ratings.comment')
-        ->orderByDesc('ratings.created_at')
-        ->limit(10)
-        ->get();
+            ->join('books', 'ratings.book_id', '=', 'books.id')
+            ->join('users', 'ratings.user_id', '=', 'users.id')
+            ->select(
+                'users.name as user_name',
+                'books.title as book_title',
+                'ratings.rating',
+                'ratings.comment'
+            )
+            ->whereNotNull('ratings.comment')
+            ->orderByDesc('ratings.created_at')
+            ->limit(10)
+            ->get();
 
-        return response()->json(['data' => $reviews]);;
+        return response()->json(['data' => $reviews]);
     }
 
     public function news()
     {
-         $news = [
-        [
-            'id' => 1,
-            'title' => '5 Buku Terbaik Minggu Ini',
-            'excerpt' => 'Dari fiksi hingga non-fiksi, berikut rekomendasi kami...',
-            'image' => 'https://source.unsplash.com/600x400/?book',
-            'link' => '/news/buku-terbaik',
-        ],
-        [
-            'id' => 2,
-            'title' => 'Wawancara dengan Penulis Lokal',
-            'excerpt' => 'Mengungkap inspirasi dan proses kreatif mereka...',
-            'image' => 'https://source.unsplash.com/600x400/?writer',
-            'link' => '/news/wawancara-penulis',
-        ]
-    ];
+        $news = [
+            [
+                'id' => 1,
+                'title' => '5 Buku Terbaik Minggu Ini',
+                'excerpt' => 'Dari fiksi hingga non-fiksi, berikut rekomendasi kami...',
+                'image' => 'https://source.unsplash.com/600x400/?book',
+                'link' => '/news/buku-terbaik',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Wawancara dengan Penulis Lokal',
+                'excerpt' => 'Mengungkap inspirasi dan proses kreatif mereka...',
+                'image' => 'https://source.unsplash.com/600x400/?writer',
+                'link' => '/news/wawancara-penulis',
+            ]
+        ];
 
-    return response()->json(['data' => $news]);
-}
-
+        return response()->json(['data' => $news]);
+    }
+} 
