@@ -149,5 +149,25 @@ class BookController extends Controller
         return response()->json(['data' => $reviews]);;
     }
 
+    public function news()
+    {
+         $news = [
+        [
+            'id' => 1,
+            'title' => '5 Buku Terbaik Minggu Ini',
+            'excerpt' => 'Dari fiksi hingga non-fiksi, berikut rekomendasi kami...',
+            'image' => 'https://source.unsplash.com/600x400/?book',
+            'link' => '/news/buku-terbaik',
+        ],
+        [
+            'id' => 2,
+            'title' => 'Wawancara dengan Penulis Lokal',
+            'excerpt' => 'Mengungkap inspirasi dan proses kreatif mereka...',
+            'image' => 'https://source.unsplash.com/600x400/?writer',
+            'link' => '/news/wawancara-penulis',
+        ]
+    ];
+
+    return response()->json(['data' => $news]);
 }
 
