@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Rating;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -114,6 +115,19 @@ class BookController extends Controller
             'success' => true,
             'data' => $books
         ]);
+    }
+
+    public function popular()
+    {
+       $books = DB::table('ratings')
+        ->join('books', 'ratings.book_id', '=', 'books.id')
+        ->select('books.id', 'books.title', 'books.cover_url', DB::raw('AVG(ratings.rating) as average_rating'))
+        ->groupBy('books.id', 'books.title', 'books.cover_url')
+        ->orderByDesc('average_rating')
+        ->limit(10)
+        ->get();
+
+        return response()->json(['data' => $books]);
     }
 
 }

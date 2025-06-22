@@ -43,5 +43,6 @@ Route::get('/import-books', [GoogleBooksController::class, 'searchAndImport']);
 
 Route::get('/search-books', [BookController::class, 'search']);
 
+Route::get('/books/popular', [BookController::class, 'popular']);
 
 
