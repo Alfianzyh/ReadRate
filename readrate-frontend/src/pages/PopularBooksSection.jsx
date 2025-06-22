@@ -16,13 +16,16 @@ const PopularBooksSection = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
-    
-    axios
-      .get(`https://www.googleapis.com/books/v1/volumes?q=${randomKeyword}&maxResults=6`)
-      .then(res => {
-        const items = res.data.items || [];
-        setBooks(items.map(item => ({
+    const fetchBooks = async () => {
+      const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+      const tempBooks = [];
+
+      // Fetch dari Google Books
+      try {
+        const googleRes = await axios.get(
+          `https://www.googleapis.com/books/v1/volumes?q=${randomKeyword}&maxResults=6`
+        );
+        const googleBooks = (googleRes.data.items || []).map(item => ({
           id: item.id,
           title: item.volumeInfo.title,
           authors: item.volumeInfo.authors?.join(', ') || 'Unknown',
@@ -32,9 +35,41 @@ const PopularBooksSection = () => {
             item.volumeInfo.imageLinks?.medium ||
             item.volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://') ||
             null,
-        })));
-      })
-      .catch(err => console.error('Gagal fetch buku populer:', err));
+        }));
+        tempBooks.push(...googleBooks);
+      } catch (err) {
+        console.error('Gagal fetch dari Google Books:', err);
+      }
+
+      // Fetch dari NYT Books API
+      try {
+        const nytRes = await axios.get(
+          'https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json',
+          {
+            params: {
+              'api-key': 'Av7sSGUdqIo6hkzMRQwooTnTvktyWyyg',
+            },
+          }
+        );
+
+        const nytBooks = nytRes.data.results.books.map(book => ({
+          id: book.primary_isbn13,
+          title: book.title,
+          authors: book.author,
+          image: book.book_image || null,
+        }));
+
+        tempBooks.push(...nytBooks);
+      } catch (err) {
+        console.error('Gagal fetch dari NYT:', err);
+      }
+
+      // Acak dan ambil 6 buku
+      const shuffled = tempBooks.sort(() => 0.5 - Math.random()).slice(0, 8);
+      setBooks(shuffled);
+    };
+
+    fetchBooks();
   }, []);
 
   return (
