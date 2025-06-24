@@ -6,3 +6,11 @@
 html.theme-transition {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
+
+/* index.css */
+body {
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
