@@ -12,17 +12,16 @@ const LandingPage = () => {
       <NavBar />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-6 py-20 bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] dark:from-gray-800 dark:to-gray-900 overflow-hidden">
+      <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-6 py-20 bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] dark:from-[#3B2F2F] dark:to-[#2E1D1D] overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg"
+          alt="Background Bookshelf"
+          className="w-full h-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/50 to-transparent dark:from-[#3B2F2F]/80 dark:via-[#3B2F2F]/40 dark:to-transparent" />
+      </div>
 
-        {/* Wallpaper Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg"
-            alt="Background Bookshelf"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/50 to-transparent dark:from-gray-900/80 dark:via-gray-900/40 dark:to-transparent" />
-        </div>
 
         {/* Text & CTA */}
         <div className="z-10 max-w-xl md:mr-12 mb-10 md:mb-0">
