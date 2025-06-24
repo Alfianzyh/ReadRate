@@ -2,11 +2,15 @@ import React from 'react';
 import PopularBooksSection from './PopularBooksSection';
 import BookNewsSection from './BookNewsSection';
 import LandingPageButton from '../components/LandingPageButton';
+import NavBar from '../components/NavBar';
 import { motion } from 'framer-motion';
 
 const LandingPage = () => {
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      {/* Navbar */}
+      <NavBar />
+      
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-6 py-20 bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] dark:from-gray-800 dark:to-gray-900 overflow-hidden">
 
