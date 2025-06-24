@@ -10,7 +10,7 @@ const LandingPage = () => {
     <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Navbar */}
       <NavBar />
-      
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-6 py-20 bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] dark:from-gray-800 dark:to-gray-900 overflow-hidden">
 
@@ -32,7 +32,7 @@ const LandingPage = () => {
             transition={{ duration: 1 }}
             className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4"
           >
-            Welcome to <span className="text-yellow-600">ReadRate</span>
+            Welcome to <span className="text-orange-700 dark:text-yellow-400">ReadRate</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
