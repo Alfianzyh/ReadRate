@@ -17,8 +17,8 @@ const StyledWrapper = styled.div`
     position: relative;
     padding: 10px 24px;
     font-size: 18px;
-    color: rgb(193, 163, 98);
-    border: 2px solid rgb(193, 163, 98);
+    color: rgb(231, 154, 2);
+    border: 2px solid rgb(231, 154, 2);
     border-radius: 34px;
     background-color: transparent;
     font-weight: 600;
@@ -36,18 +36,18 @@ const StyledWrapper = styled.div`
     border-radius: inherit;
     scale: 0;
     z-index: -1;
-    background-color: rgb(193, 163, 98);
+    background-color: rgb(231, 154, 2);
     transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
   }
 
   .button:hover::before {
-    scale: 3;
+    scale: 4;
   }
 
   .button:hover {
-    color: #212121;
+    color: #fff9ed;
     scale: 1.1;
-    box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+    box-shadow: 0 0px 20px rgba(231, 154, 2, 0.4);
   }
 
   .button:active {

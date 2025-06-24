@@ -16,7 +16,7 @@ const LandingPage = () => {
             transition={{ duration: 0.6 }}
             className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4"
           >
-            Selamat Datang di <span className="text-blue-600">ReadRate</span> 📚
+            Selamat Datang di <span className="text-yellow-600">ReadRate</span> 📚
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
