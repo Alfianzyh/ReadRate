@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sun, Moon, Menu, X, Search } from 'lucide-react';
+import Logo from '../assets/img/Logo.png';
+
 
 const Navbar = () => {
   const [isDark, setIsDark] = useState(false);
@@ -60,8 +62,9 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow">
       <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-orange-700 dark:text-yellow-400">
-          ReadRate
+        <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-orange-700 dark:text-yellow-400">
+            <img src={Logo} alt="Logo" className="w-14 h-14 object-contain" />
+            <span>ReadRate</span>
         </Link>
 
         {/* Desktop Navigation */}
