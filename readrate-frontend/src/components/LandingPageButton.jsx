@@ -14,7 +14,7 @@ const Button = () => {
       const isDark = document.documentElement.classList.contains('dark');
       const root = document.documentElement;
       root.style.setProperty('--btn-color', isDark ? '#facc15' : '#C74F00'); // kuning vs oren
-      root.style.setProperty('--btn-hover-text', isDark ? '#1A202C' : '#fff9ed');
+      root.style.setProperty('--btn-hover-text', isDark ? '#3B2F2F' : '#fff9ed');
       root.style.setProperty('--btn-shadow', isDark ? 'rgba(250, 204, 21, 0.4)' : 'rgba(194, 65, 12, 0.4)');
     };
 
