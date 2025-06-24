@@ -59,7 +59,7 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow">
+    <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-[#2E1D1D]/90 backdrop-blur-md shadow">
       <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-orange-700 dark:text-yellow-400">
@@ -90,9 +90,9 @@ const Navbar = () => {
                     value={query}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     placeholder="Cari buku..."
-                    className="w-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full px-3 py-1 text-sm text-gray-800 dark:text-gray-100 focus:outline-none"
+                    className="w-full bg-gray-100 dark:bg-[#3B2F2F] border border-gray-300 dark:border-[#5C4033] rounded-full px-3 py-1 text-sm text-gray-800 dark:text-gray-100 focus:outline-none"
                 />
-                <button className="absolute right-2 top-1.5 text-gray-400">
+                <button className="absolute right-2 top-1.5 text-gray-400 dark:text-[#5C4033]">
                     <Search size={16} />
                 </button>
 
@@ -134,10 +134,10 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileMenu && (
         <motion.nav
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="md:hidden bg-white dark:bg-gray-900 px-6 py-4 space-y-4"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white dark:bg-[#2E1D1D] px-6 py-4 space-y-4"
         >
           {navLinks.map((link) => (
             <Link
