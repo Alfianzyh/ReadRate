@@ -68,15 +68,15 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (
             <Link
-              key={link.name}
-              to={link.path}
-              className={`text-sm font-medium ${
-                location.pathname === link.path
-                  ? 'text-orange-700 dark:text-yellow-400'
-                  : 'text-gray-700 dark:text-gray-200'
-              } hover:underline`}
-            >
-              {link.name}
+                key={link.name}
+                to={link.path}
+                className={`text-sm font-medium ${
+                    location.pathname === link.path
+                    ? 'text-orange-700 dark:text-yellow-400'
+                    : 'text-gray-700 dark:text-gray-200'
+                } hover:text-orange-700 dark:hover:text-yellow-400 transition`}
+                >
+                {link.name}
             </Link>
           ))}
 
@@ -138,17 +138,18 @@ const Navbar = () => {
         >
           {navLinks.map((link) => (
             <Link
-              key={link.name}
-              to={link.path}
-              onClick={() => setMobileMenu(false)}
-              className={`block text-base font-medium ${
-                location.pathname === link.path
-                  ? 'text-indigo-600 dark:text-yellow-400'
-                  : 'text-gray-800 dark:text-gray-200'
-              }`}
-            >
-              {link.name}
+                key={link.name}
+                to={link.path}
+                onClick={() => setMobileMenu(false)}
+                className={`block text-base font-medium ${
+                    location.pathname === link.path
+                    ? 'text-orange-700 dark:text-yellow-400'
+                    : 'text-gray-800 dark:text-gray-200'
+                } hover:text-orange-700 dark:hover:text-yellow-400 transition`}
+                >
+                {link.name}
             </Link>
+
           ))}
 
           {/* Search for mobile */}
