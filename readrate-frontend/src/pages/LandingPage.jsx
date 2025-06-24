@@ -9,14 +9,26 @@ const LandingPage = () => {
     <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-6 py-20 bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] dark:from-gray-800 dark:to-gray-900 overflow-hidden">
+
+        {/* Wallpaper Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg"
+            alt="Background Bookshelf"
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/50 to-transparent dark:from-gray-900/80 dark:via-gray-900/40 dark:to-transparent" />
+        </div>
+
+        {/* Text & CTA */}
         <div className="z-10 max-w-xl md:mr-12 mb-10 md:mb-0">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            animate={{ opacity: 3, y: 0 }}
+            transition={{ duration: 1 }}
             className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4"
           >
-            Selamat Datang di <span className="text-yellow-600">ReadRate</span> 📚
+            Welcome to <span className="text-yellow-600">ReadRate</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -28,22 +40,7 @@ const LandingPage = () => {
           </motion.p>
           <LandingPageButton />
         </div>
-
-        {/* Ilustrasi Buku */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="z-10"
-        >
-          <img
-            src="https://media.istockphoto.com/id/2187709387/photo/book-shelves-jam-packed.webp?a=1&b=1&s=612x612&w=0&k=20&c=znRNgUghwCYq0mXTNxXPT206TGu2aUrxeJZd7Qety0g="
-            alt="Book reading illustration"
-            className="w-[280px] md:w-[340px] rounded-2xl shadow-lg object-cover"
-          />
-        </motion.div>
       </section>
-
 
       {/* Buku Populer */}
       <PopularBooksSection />
