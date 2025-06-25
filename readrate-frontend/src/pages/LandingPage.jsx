@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 
 const LandingPage = () => {
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="bg-[#F3EEEA] dark:bg-[#5C4033] text-gray-900 dark:text-gray-100">
       {/* Navbar */}
       <NavBar />
 
@@ -52,7 +52,7 @@ const LandingPage = () => {
       <BookNewsSection />
 
       {/* Footer */}
-      <footer className="py-8 text-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
+      <footer className="py-8 text-center text-sm text-gray-500 dark:text-yellow-400 border-t border-gray-200 dark:border-gray-700">
         &copy; {new Date().getFullYear()} ReadRate. All rights reserved.
       </footer>
     </div>
