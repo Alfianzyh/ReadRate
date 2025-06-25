@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sun, Moon, Menu, X, Search } from 'lucide-react';
 import Logo from '../assets/img/Logo.png';
+import axios from 'axios';
 
 const Navbar = () => {
   const [isDark, setIsDark] = useState(false);
@@ -36,6 +37,7 @@ const Navbar = () => {
     try {
         const res = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${text}&maxResults=5`);
         const items = res.data.items || [];
+        console.log(items);
         setSuggestions(items.map(item => ({
         title: item.volumeInfo.title,
         id: item.id,
@@ -97,12 +99,12 @@ const Navbar = () => {
 
                 {/* Dropdown Suggestions */}
                 {suggestions.length > 0 && (
-                    <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-[#3B2F2F] border dark:border-[#5C4033] rounded-md shadow-lg max-h-60 overflow-y-auto">
                     {suggestions.map((item, idx) => (
                         <li
                         key={idx}
                         onClick={() => handleSelectSuggestion(item)}
-                        className="px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                        className="px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-[#5C4033] cursor-pointer"
                         >
                         {item.title}
                         </li>
@@ -161,20 +163,20 @@ const Navbar = () => {
                     value={query}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     placeholder="Cari buku..."
-                    className="w-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full px-3 py-1 text-sm text-gray-800 dark:text-gray-100 focus:outline-none"
+                    className="w-full bg-gray-100 dark:bg-[#3B2F2F] border border-gray-300 dark:border-[#5C4033] rounded-full px-3 py-1 text-sm text-gray-800 dark:text-gray-100 focus:outline-none"
                 />
-                <button className="absolute right-2 top-1.5 text-gray-400">
+                <button className="absolute right-2 top-1.5 text-black dark:text-white">
                     <Search size={16} />
                 </button>
 
                 {/* Dropdown Suggestions */}
                 {suggestions.length > 0 && (
-                    <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-[#3B2F2F] border dark:border-[#5C4033] rounded-md shadow-lg max-h-60 overflow-y-auto">
                     {suggestions.map((item, idx) => (
                         <li
                         key={idx}
                         onClick={() => handleSelectSuggestion(item)}
-                        className="px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                        className="px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-[#5C4033] cursor-pointer"
                         >
                         {item.title}
                         </li>
