@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Sun, Moon, Menu, X, Search } from 'lucide-react';
 import Logo from '../assets/img/Logo.png';
 
-
 const Navbar = () => {
   const [isDark, setIsDark] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -92,7 +91,7 @@ const Navbar = () => {
                     placeholder="Cari buku..."
                     className="w-full bg-gray-100 dark:bg-[#3B2F2F] border border-gray-300 dark:border-[#5C4033] rounded-full px-3 py-1 text-sm text-gray-800 dark:text-gray-100 focus:outline-none"
                 />
-                <button className="absolute right-2 top-1.5 text-gray-400 dark:text-[#5C4033]">
+                <button className="absolute right-2 top-1.5 text-black dark:text-white">
                     <Search size={16} />
                 </button>
 

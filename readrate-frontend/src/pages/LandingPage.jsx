@@ -2,7 +2,7 @@ import React from 'react';
 import PopularBooksSection from './PopularBooksSection';
 import BookNewsSection from './BookNewsSection';
 import LandingPageButton from '../components/LandingPageButton';
-import NavBar from '../components/NavBar';
+import NavBar from '../components/Navbar';
 import { motion } from 'framer-motion';
 
 const LandingPage = () => {
