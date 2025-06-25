@@ -30,22 +30,22 @@ const Navbar = () => {
   const handleSearchChange = async (text) => {
     setQuery(text);
     if (text.length < 2) {
-        setSuggestions([]);
-        return;
+      setSuggestions([]);
+      return;
     }
 
     try {
-        const res = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${text}&maxResults=5`);
-        const items = res.data.items || [];
-        console.log(items);
-        setSuggestions(items.map(item => ({
+      const res = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${text}&maxResults=5`);
+      const items = res.data.items || [];
+      setSuggestions(items.map(item => ({
         title: item.volumeInfo.title,
         id: item.id,
-        })));
+        image: item.volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://') || null,
+      })));
     } catch (err) {
-        console.error('Autocomplete error:', err);
+      console.error('Autocomplete error:', err);
     }
-    };
+  };
 
     const handleSelectSuggestion = (item) => {
         setQuery('');
@@ -99,19 +99,29 @@ const Navbar = () => {
 
                 {/* Dropdown Suggestions */}
                 {suggestions.length > 0 && (
-                    <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-[#3B2F2F] border dark:border-[#5C4033] rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-[#3B2F2F] border dark:border-[#5C4033] rounded-md shadow-lg overflow-hidden">
                     {suggestions.map((item, idx) => (
-                        <li
+                      <li
                         key={idx}
                         onClick={() => handleSelectSuggestion(item)}
-                        className="px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-[#5C4033] cursor-pointer"
-                        >
-                        {item.title}
-                        </li>
+                        className="flex items-center px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-[#5C4033] cursor-pointer transition"
+                      >
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-8 h-10 object-cover rounded mr-3"
+                          />
+                        ) : (
+                          <div className="w-8 h-10 bg-gray-300 dark:bg-gray-600 rounded mr-3" />
+                        )}
+                        <span className="line-clamp-2">{item.title}</span>
+                      </li>
                     ))}
-                    </ul>
+                  </ul>
                 )}
             </div>
+
           {/* Dark mode toggle */}
           <button
             onClick={toggleDarkMode}
@@ -171,17 +181,26 @@ const Navbar = () => {
 
                 {/* Dropdown Suggestions */}
                 {suggestions.length > 0 && (
-                    <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-[#3B2F2F] border dark:border-[#5C4033] rounded-md shadow-lg max-h-60 overflow-y-auto">
+                  <ul className="absolute z-20 mt-1 w-full bg-white dark:bg-[#3B2F2F] border dark:border-[#5C4033] rounded-md shadow-lg overflow-hidden">
                     {suggestions.map((item, idx) => (
-                        <li
+                      <li
                         key={idx}
                         onClick={() => handleSelectSuggestion(item)}
-                        className="px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-[#5C4033] cursor-pointer"
-                        >
-                        {item.title}
-                        </li>
+                        className="flex items-center px-3 py-2 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-[#5C4033] cursor-pointer transition"
+                      >
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-8 h-10 object-cover rounded mr-3"
+                          />
+                        ) : (
+                          <div className="w-8 h-10 bg-gray-300 dark:bg-gray-600 rounded mr-3" />
+                        )}
+                        <span className="line-clamp-2">{item.title}</span>
+                      </li>
                     ))}
-                    </ul>
+                  </ul>
                 )}
             </div>
 
