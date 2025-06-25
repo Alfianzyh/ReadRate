@@ -52,7 +52,7 @@ const LandingPage = () => {
       <BookNewsSection />
 
       {/* Footer */}
-      <footer className="py-8 text-center text-sm text-gray-500 dark:text-yellow-400 border-t border-gray-200 dark:border-gray-700">
+      <footer className="py-8 text-center text-sm text-gray-500 dark:text-yellow-400 border-t border-gray-200 dark:border-[#3a2a20]">
         &copy; {new Date().getFullYear()} ReadRate. All rights reserved.
       </footer>
     </div>

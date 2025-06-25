@@ -71,7 +71,7 @@ const PopularBooksSection = () => {
   }, []);
 
   return (
-    <section className="mt-16 px-4">
+    <section className="mt-10 mb-10 px-4">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-yellow-100">
           Popular Books
