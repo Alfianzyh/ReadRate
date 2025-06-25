@@ -125,7 +125,7 @@ const Navbar = () => {
           {/* Dark mode toggle */}
           <button
             onClick={toggleDarkMode}
-            className="ml-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition"
+            className="ml-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#5C4033] transition"
             aria-label="Toggle dark mode"
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
@@ -135,7 +135,7 @@ const Navbar = () => {
         {/* Mobile menu toggle */}
         <button
           onClick={() => setMobileMenu(!mobileMenu)}
-          className="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition"
+          className="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#5C4033] transition"
           aria-label="Toggle menu"
         >
           {mobileMenu ? <X size={22} /> : <Menu size={22} />}
