@@ -73,7 +73,7 @@ const PopularBooksSection = () => {
   return (
     <section className="mt-16 px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+        <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-yellow-100">
           Popular Books
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
@@ -83,27 +83,27 @@ const PopularBooksSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+              className="group bg-white dark:bg-[#2d1f16] rounded-xl shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-300 overflow-hidden"
             >
               {book.image ? (
-                <div className="overflow-hidden rounded-md">
+                <div className="overflow-hidden rounded-t-xl bg-gray-100 dark:bg-[#3a2a20]">
                   <img
                     src={book.image}
                     alt={book.title}
-                    className="w-[140px] h-[210px] object-cover rounded-md mx-auto transform group-hover:scale-105 transition duration-300"
+                    className="w-[140px] h-[210px] object-cover mx-auto transform group-hover:scale-105 transition duration-300 ease-in-out"
                     loading="lazy"
                   />
                 </div>
               ) : (
-                <div className="w-[140px] h-[210px] bg-gray-300 dark:bg-gray-700 flex items-center justify-center mx-auto rounded-md text-sm text-gray-500">
+                <div className="w-[140px] h-[210px] bg-gray-300 dark:bg-[#3a2a20] flex items-center justify-center mx-auto rounded-t-xl text-sm text-gray-500 dark:text-gray-300">
                   No Image
                 </div>
               )}
-              <div className="mt-3 px-3 pb-3 text-center">
-                <h3 className="font-medium text-sm text-gray-900 dark:text-white line-clamp-2">
+              <div className="mt-3 px-3 pb-4 text-center">
+                <h3 className="font-medium text-sm text-gray-900 dark:text-yellow-100 line-clamp-2">
                   {book.title}
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-xs text-gray-600 dark:text-yellow-300 mt-1">
                   {book.authors}
                 </p>
               </div>
