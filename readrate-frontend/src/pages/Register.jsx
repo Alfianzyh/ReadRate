@@ -62,6 +62,10 @@ const Register = () => {
         >
           Daftar
         </button>
+
+        <p className="text-sm text-center text-gray-600 dark:text-yellow-300">
+          Sudah punya akun? <a href="/Login" className="text-orange-700 dark:text-yellow-400 underline">Masuk disini</a>
+        </p>
       </form>
     </div>
   );
