@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Goutte\Client;
 
-class NewsScraperController extends Controller
+class BookNewsController extends Controller
 {
     public function fetch()
     {
