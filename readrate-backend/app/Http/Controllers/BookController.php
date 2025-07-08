@@ -25,6 +25,9 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::findOrFail($id);
+        if (!$book) {
+            return response()->json(['message' => 'Buku tidak ditemukan'], 404);
+        }
         return response()->json($book);
     }
 
