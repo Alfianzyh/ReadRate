@@ -10,49 +10,61 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/login', {
-        email,
-        password,
-      },
-      {
-        headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    }
-);
+      const response = await axios.post(
+        'http://localhost:8000/api/login',
+        { email, password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
       localStorage.setItem('token', response.data.token);
       navigate('/');
-    } 
-    catch (error) {
+    } catch (error) {
       console.error('Login gagal:', error);
       alert('Email atau password salah!');
     }
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleLogin}>
+    <div className="min-h-screen flex items-center justify-center bg-[#f5eee7] dark:bg-[#2d1f16] transition-colors duration-300 px-4">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white dark:bg-[#3a2a20] text-gray-800 dark:text-yellow-100 p-8 rounded-xl shadow-md w-full max-w-md space-y-5"
+      >
+        <h2 className="text-3xl font-bold text-center">Login</h2>
+
         <input
           type="email"
-          className="w-full p-2 border rounded mb-3"
+          className="w-full px-4 py-2 bg-gray-100 dark:bg-[#4a3a2d] text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-yellow-400 transition"
           placeholder="Email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
-          className="w-full p-2 border rounded mb-3"
+          className="w-full px-4 py-2 bg-gray-100 dark:bg-[#4a3a2d] text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-yellow-400 transition"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
+
+        <button
+          type="submit"
+          className="w-full py-2 bg-orange-600 dark:bg-yellow-400 text-white dark:text-gray-900 font-semibold rounded-md hover:scale-105 transition-transform duration-300"
+        >
           Login
         </button>
+
+        <p className="text-sm text-center text-gray-600 dark:text-yellow-300">
+          Belum punya akun? <a href="/register" className="text-orange-700 dark:text-yellow-400 underline">Daftar di sini</a>
+        </p>
+
       </form>
     </div>
   );
