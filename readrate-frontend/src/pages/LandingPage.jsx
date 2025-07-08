@@ -15,7 +15,7 @@ const LandingPage = () => {
       <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-6 py-20 bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] dark:from-[#3B2F2F] dark:to-[#2E1D1D] overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg"
+          src="/LandingPageBG.jpg"
           alt="Background Bookshelf"
           className="w-full h-full object-cover opacity-20"
         />

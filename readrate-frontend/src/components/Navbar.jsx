@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sun, Moon, Menu, X, Search } from 'lucide-react';
-import Logo from '../assets/img/Logo.png';
+import Logo from '/Logo.png';
 import axios from 'axios';
 
 const Navbar = () => {
