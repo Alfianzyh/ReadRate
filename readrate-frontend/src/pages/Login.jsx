@@ -54,6 +54,15 @@ function Login() {
           required
         />
 
+        <div className="text-right text-sm">
+          <a
+            href="/forgot-password"
+            className="text-orange-600 dark:text-yellow-300 hover:underline"
+          >
+            Lupa password?
+          </a>
+        </div>
+
         <button
           type="submit"
           className="w-full py-2 bg-orange-600 dark:bg-yellow-400 text-white dark:text-gray-900 font-semibold rounded-md hover:scale-105 transition-transform duration-300"
@@ -62,9 +71,14 @@ function Login() {
         </button>
 
         <p className="text-sm text-center text-gray-600 dark:text-yellow-300">
-          Belum punya akun? <a href="/register" className="text-orange-700 dark:text-yellow-400 underline">Daftar di sini</a>
+          Belum punya akun?{' '}
+          <a
+            href="/register"
+            className="text-orange-700 dark:text-yellow-400 underline"
+          >
+            Daftar di sini
+          </a>
         </p>
-
       </form>
     </div>
   );
