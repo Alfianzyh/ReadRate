@@ -7,8 +7,11 @@ const BookNewsSection = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/book-news",)
-      .then((res) => setArticles(res.data))
+      .get("http://localhost:8000/api/book/news",)
+      .then((res) => {
+        console.log("Data berita:", res.data); // <--- Tambahkan ini
+        setArticles(res.data);
+      })
       .catch((err) => console.error("Gagal ambil berita:", err));
   }, []);
 
@@ -34,7 +37,7 @@ const BookNewsSection = () => {
               {a.thumbnail && (
                 <div className="overflow-hidden rounded-md">
                   <img
-                    src={a.thumbnail}
+                    src={a.thumbnail} 
                     alt={a.title}
                     className="w-full h-40 object-cover rounded-md mb-3 transform group-hover:scale-105 transition-all duration-300"
                     loading="lazy"
@@ -44,11 +47,12 @@ const BookNewsSection = () => {
               <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-yellow-100 group-hover:scale-[1.02] group-hover:tracking-tight transition-transform duration-300">
                 {a.title}
               </h3>
-              <p className="text-sm text-gray-700 dark:text-yellow-300">
-                {a.description.slice(0, 100)}...
+             <p className="text-sm text-gray-700 dark:text-yellow-300">
+                {(a.description || 'Tidak ada deskripsi').slice(0, 100)}...
               </p>
+
               <span className="text-xs text-gray-500 dark:text-yellow-400 block mt-3">
-                {a.source} • {new Date(a.pubDate).toLocaleDateString()}
+                {a.source} • {a.pubDate ? new Date(a.pubDate).toLocaleDateString() : 'Tanpa tanggal'}
               </span>
             </a>
           ))}

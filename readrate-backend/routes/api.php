@@ -45,4 +45,4 @@ Route::get('/import-books', [GoogleBooksController::class, 'searchAndImport']);
 
 Route::get('/search-books', [BookController::class, 'search']);
 
-Route::get('/book-news', [BookNewsController::class, 'fetch']);
+Route::get('/book/news', [BookNewsController::class, 'fetch']);
