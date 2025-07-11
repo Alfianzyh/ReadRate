@@ -8,6 +8,7 @@ import ReadHistory from './pages/ReadHistory';
 import AddBook from './pages/AddBook';
 import BookDetail from './pages/BookDetail'; 
 import LandingPage from './pages/LandingPage';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
