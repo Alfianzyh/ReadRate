@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
 import { Eye, EyeOff } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -34,12 +35,15 @@ function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f5eee7] dark:bg-[#2d1f16] transition-colors duration-300 px-4">
-      <form
+      <motion.form
         onSubmit={handleLogin}
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
         className="bg-white dark:bg-[#3a2a20] text-gray-800 dark:text-yellow-100 p-8 rounded-xl shadow-md w-full max-w-md space-y-5"
       >
-        <h2 className="text-3xl font-bold text-center">Login</h2>
 
+        <h2 className="text-3xl font-bold text-center">Login</h2>
         <input
           type="email"
           className="w-full px-4 py-2 bg-gray-100 dark:bg-[#4a3a2d] text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-yellow-400 transition"
@@ -92,7 +96,7 @@ function Login() {
             Daftar di sini
           </a>
         </p>
-      </form>
+      </motion.form>
     </div>
   );
 }
