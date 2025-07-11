@@ -16,16 +16,21 @@ const Navbar = () => {
 
   // Auto detect system theme
   useEffect(() => {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDark(prefersDark);
-    document.documentElement.classList.toggle('dark', prefersDark);
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const useDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+
+  setIsDark(useDark);
+    document.documentElement.classList.toggle('dark', useDark);
   }, []);
 
   const toggleDarkMode = () => {
     const newMode = !isDark;
     setIsDark(newMode);
+    localStorage.setItem('theme', newMode ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', newMode);
   };
+
 
   const handleSearchChange = async (text) => {
     setQuery(text);
