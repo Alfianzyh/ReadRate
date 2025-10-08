@@ -33,12 +33,11 @@ function Login() {
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      // Tampilkan popup sukses sebelum redirect
       setPopup({ show: true, type: 'success', message: 'Login berhasil! Mengarahkan...' });
       setTimeout(() => {
         setPopup({ show: false, type: '', message: '' });
         navigate('/dashboard');
-      }, 1000); // sesuaikan durasi jika perlu
+      }, 1000); 
     } catch (error) {
       console.error('Login gagal:', error);
       setPopup({ show: true, type: 'error', message: 'Login gagal: periksa email/password' });
@@ -129,7 +128,6 @@ function Login() {
         </p>
       </motion.form>
 
-      {/* Popup notifikasi */}
       {popup.show && (
         <div className="fixed inset-0 flex items-end md:items-center justify-center pointer-events-none">
           <motion.div
