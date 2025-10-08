@@ -2,101 +2,245 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { toggleDarkMode } from '../utils/theme';
+import { Sun, Moon } from "lucide-react";
 
 const Dashboard = () => {
-  const [books, setBooks] = useState([]);
-  const navigate = useNavigate(); // ← penting!
+  const [readBooks, setReadBooks] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
+  const [ratedBooks, setRatedBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("read"); // 'read' | 'bookmarks' | 'rated'
+  const [isDark, setIsDark] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-    axios
-      .get("http://localhost:8000/api/read-books", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        const mappedBooks = res.data.data.map((item) => ({
-          id: item.id,
-          title: item.book?.title || "Judul tidak tersedia",
-          author: item.book?.author || "Penulis tidak diketahui",
-          cover_url: item.book?.cover_url || null,
-          read_at: item.finished_at || "-",
-          rating: item.book?.rating || 0,
-        }));
-        setBooks(mappedBooks);
+    setLoading(true);
+
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const reqs = [
+      axios.get("http://localhost:8000/api/read-books", { headers }),
+      axios.get("http://localhost:8000/api/bookmarks", { headers }),
+      axios.get("http://localhost:8000/api/ratings", { headers }),
+    ];
+
+    Promise.all(reqs)
+      .then(([readRes, bookmarksRes, ratingsRes]) => {
+        const mapRead = (items) =>
+          items?.data?.data?.map((item) => ({
+            id: item.id,
+            title: item.book?.title || "Judul tidak tersedia",
+            author: item.book?.author || "Penulis tidak diketahui",
+            cover_url: item.book?.cover_url || null,
+            read_at: item.finished_at || item.read_at || "-",
+            rating: item.rating ?? item.book?.rating ?? 0,
+            note: item.note ?? null,
+          })) || [];
+
+        const mapBookmark = (items) =>
+          items?.data?.data?.map((item) => {
+            const book = item.book || item;
+            return {
+              id: book.id,
+              title: book.title || "Judul tidak tersedia",
+              author: book.author || "Penulis tidak diketahui",
+              cover_url: book.cover_url || null,
+              read_at: "-",
+              rating: book.rating ?? 0,
+            };
+          }) || [];
+
+        const mapRatings = (items) =>
+          items?.data?.data?.map((item) => {
+            const book = item.book || item;
+            return {
+              id: book.id,
+              title: book.title || "Judul tidak tersedia",
+              author: book.author || "Penulis tidak diketahui",
+              cover_url: book.cover_url || null,
+              read_at: item.finished_at || item.read_at || "-",
+              rating: item.rating ?? book.rating ?? 0,
+              note: item.note ?? null,
+            };
+          }) || [];
+
+        setReadBooks(mapRead(readRes));
+        setBookmarks(mapBookmark(bookmarksRes));
+        setRatedBooks(mapRatings(ratingsRes));
       })
       .catch((err) => {
-        console.error("Gagal fetch data buku: ", err);
-      });
+        console.error("Gagal fetch data dashboard: ", err);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6 py-10 relative transition-colors">
-      <h1 className="text-3xl font-bold mb-8 text-center">
-        📚 Buku yang Sudah Dibaca
-      </h1>
+  useEffect(() => {
+    // sync theme with navbar behavior
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const useDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+    setIsDark(useDark);
+    document.documentElement.classList.toggle("dark", useDark);
+  }, []);
 
-      {books.length === 0 ? (
+  const toggleDarkMode = () => {
+    const newMode = !isDark;
+    setIsDark(newMode);
+    localStorage.setItem("theme", newMode ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", newMode);
+  };
+
+  const renderGrid = (books) => {
+    if (!books || books.length === 0) {
+      return (
         <p className="text-gray-500 dark:text-gray-400 text-center">
-          Belum ada buku yang dibaca.
+          Kosong.
         </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {books.map((book, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.06 }}
-              onClick={() => navigate(`/book/${book.id}`)}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 p-5 flex flex-col cursor-pointer transform hover:scale-[1.015]"
-            >
-              {book.cover_url ? (
-                <img
-                  src={book.cover_url}
-                  alt={book.title}
-                  className="w-full h-60 object-cover rounded-xl mb-4"
-                />
-              ) : (
-                <div className="w-full h-60 bg-gray-200 dark:bg-gray-700 rounded-xl mb-4 flex items-center justify-center text-gray-400 text-sm">
-                  No Cover
-                </div>
-              )}
+      );
+    }
 
-              <h2 className="text-lg font-semibold mb-1 line-clamp-2">
-                {book.title}
-              </h2>
-              <p className="text-sm mb-1 text-gray-700 dark:text-gray-300">
-                ✍️ {book.author}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {books.map((book, index) => (
+          <motion.div
+            key={book.id ?? index}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.28, delay: index * 0.04 }}
+            onClick={() => navigate(`/book/${book.id}`)}
+            className="bg-[#fffaf6] dark:bg-[#3B2F2F] rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-4 flex flex-col cursor-pointer transform hover:scale-[1.012]"
+          >
+            {book.cover_url ? (
+              <img
+                src={book.cover_url}
+                alt={book.title}
+                className="w-full h-48 object-cover rounded-xl mb-4"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-100 dark:bg-gray-700 rounded-xl mb-4 flex items-center justify-center text-gray-400">
+                No Cover
+              </div>
+            )}
+
+            <h2 className="text-md font-semibold mb-1 line-clamp-2">
+              {book.title}
+            </h2>
+            <p className="text-sm mb-1 text-gray-700 dark:text-gray-300">
+              ✍️ {book.author}
+            </p>
+
+            <div className="mt-auto flex items-center justify-between">
+              <div className="text-xs text-gray-500 dark:text-gray-400">
                 📅 {book.read_at}
-              </p>
+              </div>
+              <div className="text-sm text-yellow-400">
+                {book.rating > 0 ? (
+                  <span>
+                    {"★".repeat(book.rating)}{"☆".repeat(5 - book.rating)}
+                  </span>
+                ) : (
+                  <span className="text-gray-400">Belum rating</span>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+  };
 
-              {book.rating > 0 && (
-                <div className="mt-2 text-yellow-400 text-sm">
-                  {"★".repeat(book.rating)}{"☆".repeat(5 - book.rating)}
-                </div>
-              )}
-            </motion.div>
-          ))}
+  const activeCount = () => {
+    if (activeTab === "read") return readBooks.length;
+    if (activeTab === "bookmarks") return bookmarks.length;
+    return ratedBooks.length;
+  };
+
+  return (
+    <div className="bg-[#F3EEEA] dark:bg-[#5C4033] text-gray-900 dark:text-gray-100">
+      <div className="min-h-screen px-6 py-10 relative transition-colors">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-3xl font-bold">
+              📚 Dashboard Buku
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-300 ml-3">
+                ({activeCount()})
+              </span>
+            </h1>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleDarkMode}
+                className="ml-2 p-2 rounded-full hover:bg-white/30 dark:hover:bg-white/10 transition"
+                aria-label="Ganti tema"
+                title="Ganti tema"
+              >
+                {isDark ? (
+                  <Sun size={18} className="text-white" />
+                ) : (
+                  <Moon size={18} className="text-gray-700" />
+                )}
+              </button>
+              <button
+                onClick={() => navigate("/add-book")}
+                className="bg-orange-700 hover:bg-orange-800 text-white rounded-full px-4 py-2 text-sm shadow"
+              >
+                Tambah Buku
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-[#fffaf6] dark:bg-[#3B2F2F] rounded-2xl shadow-sm p-3 mb-6">
+            <nav className="flex gap-2">
+              <button
+                onClick={() => setActiveTab("read")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${activeTab === "read" ? 'bg-orange-700 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+              >
+                Dibaca
+              </button>
+              <button
+                onClick={() => setActiveTab("bookmarks")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${activeTab === "bookmarks" ? 'bg-orange-700 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+              >
+                Bookmark
+              </button>
+              <button
+                onClick={() => setActiveTab("rated")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${activeTab === "rated" ? 'bg-orange-700 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+              >
+                Dirating
+              </button>
+            </nav>
+          </div>
+
+          <div className="mb-20">
+            {loading ? (
+              <div className="text-center text-gray-500 dark:text-white">Memuat...</div>
+            ) : (
+              <>
+                {activeTab === "read" && renderGrid(readBooks)}
+                {activeTab === "bookmarks" && renderGrid(bookmarks)}
+                {activeTab === "rated" && renderGrid(ratedBooks)}
+              </>
+            )}
+          </div>
         </div>
-      )}
 
-      {/* Floating Button */}
-      <motion.button
-        onClick={() => navigate("/add-book")}
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        whileTap={{ scale: 0.95 }}
-        className="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg z-50"
-        aria-label="Tambah Buku"
-      >
-        <span className="text-2xl font-bold">+</span>
-      </motion.button>
-
+        <motion.button
+          onClick={() => navigate("/add-book")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="fixed bottom-6 right-6 bg-orange-700 hover:bg-orange-800 text-white rounded-full p-3 shadow-lg z-50"
+          aria-label="Tambah Buku"
+        >
+          <span className="text-lg font-bold">+</span>
+        </motion.button>
+      </div>
     </div>
   );
 };
