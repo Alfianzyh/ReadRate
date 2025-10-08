@@ -9,11 +9,15 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [popup, setPopup] = useState({ show: false, type: '', message: '' });
+
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         'http://localhost:8000/api/login',
@@ -28,10 +32,21 @@ function Login() {
       const token = response.data.token;
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      navigate('/dashboard');
+
+      // Tampilkan popup sukses sebelum redirect
+      setPopup({ show: true, type: 'success', message: 'Login berhasil! Mengarahkan...' });
+      setTimeout(() => {
+        setPopup({ show: false, type: '', message: '' });
+        navigate('/dashboard');
+      }, 1000); // sesuaikan durasi jika perlu
     } catch (error) {
       console.error('Login gagal:', error);
-      alert('Email atau password salah!');
+      setPopup({ show: true, type: 'error', message: 'Login gagal: periksa email/password' });
+      setTimeout(() => {
+        setPopup({ show: false, type: '', message: '' });
+      }, 2000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,6 +68,7 @@ function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          disabled={isLoading}
         />
 
         <div className="relative">
@@ -63,11 +79,13 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={isLoading}
           />
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-yellow-200"
+            disabled={isLoading}
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
@@ -84,9 +102,20 @@ function Login() {
 
         <button
           type="submit"
-          className="w-full py-2 bg-orange-600 dark:bg-yellow-400 text-white dark:text-gray-900 font-semibold rounded-md hover:scale-105 transition-transform duration-300"
+          disabled={isLoading}
+          className={`w-full py-2 ${isLoading ? 'opacity-80 cursor-not-allowed' : ''} bg-orange-600 dark:bg-yellow-400 text-white dark:text-gray-900 font-semibold rounded-md hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-3`}
         >
-          Login
+          {isLoading ? (
+            <>
+              <svg className="w-5 h-5 animate-spin text-white dark:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              <span>Memproses...</span>
+            </>
+          ) : (
+            'Login'
+          )}
         </button>
 
         <p className="text-sm text-center text-gray-600 dark:text-yellow-300">
@@ -99,6 +128,38 @@ function Login() {
           </a>
         </p>
       </motion.form>
+
+      {/* Popup notifikasi */}
+      {popup.show && (
+        <div className="fixed inset-0 flex items-end md:items-center justify-center pointer-events-none">
+          <motion.div
+            initial={{ y: 30, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 30, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className={`pointer-events-auto mb-8 md:mb-0 max-w-sm w-full mx-4 rounded-lg shadow-lg px-4 py-3 ${
+              popup.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex-shrink-0">
+                {popup.type === 'success' ? (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                )}
+              </div>
+              <div className="flex-1 text-sm">
+                {popup.message}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
