@@ -13,11 +13,36 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [popup, setPopup] = useState({ show: false, type: '', message: '' });
 
+  const [passwordErrors, setPasswordErrors] = useState([]);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const validatePassword = (pwd) => {
+    const errors = [];
+    if (pwd.length < 8) errors.push('Minimal 8 karakter');
+    if (!/[A-Z]/.test(pwd)) errors.push('Minimal 1 huruf kapital (A-Z)');
+    if (!/[a-z]/.test(pwd)) errors.push('Minimal 1 huruf kecil (a-z)');
+    if (!/[0-9]/.test(pwd)) errors.push('Minimal 1 angka (0-9)');
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) errors.push('Minimal 1 karakter spesial');
+    return errors;
+  };
+
+  React.useEffect(() => {
+    const errs = validatePassword(password);
+    setPasswordErrors(errs);
+    setIsPasswordValid(errs.length === 0);
+  }, [password]);
+
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    if (!isPasswordValid) {
+      setPopup({ show: true, type: 'error', message: 'Password tidak memenuhi persyaratan.' });
+      setTimeout(() => setPopup({ show: false, type: '', message: '' }), 2000);
+      setIsLoading(false);
+      return;
+    }
     try {
       await axios.post('http://localhost:8000/api/register', {
         name,
@@ -93,9 +118,23 @@ const Register = () => {
           </button>
         </div>
 
+        <div className="text-xs text-gray-600 dark:text-yellow-300 space-y-1">
+          <div className="font-medium">Persyaratan password:</div>
+          <ul className="pl-4 list-disc">
+            {['Minimal 8 karakter','Minimal 1 huruf kapital (A-Z)','Minimal 1 huruf kecil (a-z)','Minimal 1 angka (0-9)', 'Minimal 1 karakter spesial'].map((rule, i) => {
+              const failed = passwordErrors.includes(rule);
+              return (
+                <li key={i} className={failed ? 'text-red-500' : 'text-green-600'}>
+                  {failed ? '✖ ' : '✔ '} {rule}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || !isPasswordValid}
           className={`w-full py-2 ${isLoading ? 'opacity-80 cursor-not-allowed' : ''} bg-orange-600 dark:bg-yellow-400 text-white dark:text-gray-900 font-semibold rounded-md hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-3`}
         >
           {isLoading ? (
