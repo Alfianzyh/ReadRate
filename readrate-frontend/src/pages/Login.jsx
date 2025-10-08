@@ -25,8 +25,10 @@ function Login() {
           },
         }
       );
-      localStorage.setItem('token', response.data.token);
-      navigate('/');
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login gagal:', error);
       alert('Email atau password salah!');
