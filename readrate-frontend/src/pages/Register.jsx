@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -67,11 +67,13 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5eee7] dark:bg-[#2d1f16] transition-colors duration-300 px-4">
+    // hapus bg... dari halaman, biarkan App.jsx yang mengatur background/theme root
+    <div className="min-h-screen flex items-center justify-center px-4">
       <motion.form
         onSubmit={handleRegister}
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className="bg-white dark:bg-[#3a2a20] text-gray-800 dark:text-yellow-100 p-8 rounded-xl shadow-md w-full max-w-md space-y-5"
       >
@@ -152,7 +154,7 @@ const Register = () => {
 
         <p className="text-sm text-center text-gray-600 dark:text-yellow-300">
           Sudah punya akun?{' '}
-          <a href="/login" className="text-orange-700 dark:text-yellow-400 underline">Masuk di sini</a>
+          <Link to="/login" className="text-orange-700 dark:text-yellow-400 underline">Masuk di sini</Link>
         </p>
       </motion.form>
 
