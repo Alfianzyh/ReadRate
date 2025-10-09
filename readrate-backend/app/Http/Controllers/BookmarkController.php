@@ -24,7 +24,6 @@ class BookmarkController extends Controller
     {
         $user = auth()->user();
 
-        // Cek jika bookmark sudah ada
         $existing = Bookmark::where('user_id', $user->id)
                             ->where('book_id', $bookId)
                             ->first();

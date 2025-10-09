@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-// NavBar dihilangkan sesuai permintaan (tidak perlu navbar di halaman ini)
 import { motion } from 'framer-motion';
 import { Search, Plus, Bookmark, Check } from 'lucide-react';
 
@@ -35,24 +34,50 @@ function AddBook() {
     setLoading(true);
     setStatusMsg('');
     try {
-      const res = await axios.get(`http://localhost:8000/api/import-books`, {
-        params: { q },
-      });
-      // Normalisasi response menjadi array:
-      // - jika backend mengembalikan { data: [...] } atau [...] -> gunakan itu
-      // - jika backend mengembalikan Google Books style { items: [...] } -> gunakan items
-      // - jika tidak sesuai, fallback ke []
+      // gunakan path relatif agar mudah diproksikan (atau ganti jika membutuhkan full URL)
+      const res = await axios.get('/api/import-books', { params: { q } });
+      console.log('import-books response:', res.status, res.data);
+
       const raw = res?.data ?? {};
       let items = [];
+
       if (Array.isArray(raw)) items = raw;
       else if (Array.isArray(raw.data)) items = raw.data;
       else if (Array.isArray(raw.items)) items = raw.items;
       else if (Array.isArray(raw.docs)) items = raw.docs;
-      else items = [];
-      setResults(items);
+      else {
+        // cari array ter-dalam jika struktur nested (fallback)
+        const found = Object.values(raw).find((v) => Array.isArray(v));
+        if (Array.isArray(found)) items = found;
+      }
+
+      // Jika response menggunakan Google Books (items with volumeInfo), normalisasi ke bentuk yang konsisten
+      const normalized = items.map((it) => {
+        if (it?.volumeInfo) {
+          return {
+            id: it.id ?? it.etag ?? JSON.stringify(it.volumeInfo?.title).slice(0,12),
+            title: it.volumeInfo?.title ?? 'Unknown title',
+            author: (it.volumeInfo?.authors || []).join(', '),
+            cover_url: it.volumeInfo?.imageLinks?.thumbnail ?? it.volumeInfo?.imageLinks?.smallThumbnail ?? null,
+            raw: it,
+          };
+        }
+        // jika sudah berbentuk book object (backend import sudah memetakan), kembalikan apa adanya
+        return {
+          id: it.id ?? it._id ?? Math.random().toString(36).slice(2,9),
+          title: it.title ?? it.name ?? 'Unknown title',
+          author: it.author ?? it.authors ?? '',
+          cover_url: it.cover_url ?? it.thumbnail ?? null,
+          raw: it,
+        };
+      });
+
+      setResults(normalized);
+      if (!normalized.length) setStatusMsg('Tidak ada hasil.');
     } catch (err) {
-      console.error('Gagal mencari buku', err);
-      setStatusMsg('Gagal mencari buku. Cek koneksi atau server.');
+      console.error('Gagal mencari buku (detail):', err);
+      const serverMsg = err?.response?.data?.message ?? err?.response?.data ?? err.message;
+      setStatusMsg(`Gagal mencari buku. ${serverMsg}`);
     } finally {
       setLoading(false);
     }
